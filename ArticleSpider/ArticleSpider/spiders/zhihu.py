@@ -70,11 +70,11 @@ class ZhihuSpider(scrapy.Spider):
             answer_item["question_id"] = answer["question"]["id"]
             answer_item["author_id"] =answer["author"]["id"] if "id" in answer["author"] else None
             answer_item["content"] = answer["content"] if "content" in answer else None
-            answer_item["parise_num"] = answer["voteup_count"]
+            answer_item["praise_num"] = answer["voteup_count"]
             answer_item["comments_num"] = answer["comment_count"]
             answer_item["create_time"] = answer["created_time"]
             answer_item["update_time"] = answer["updated_time"]
-            answer_item["updated_time"] = datetime.datetime.now()
+            answer_item["crawl_time"] = datetime.datetime.now()
             yield answer_item
 
 

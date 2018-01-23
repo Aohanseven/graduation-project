@@ -130,8 +130,46 @@ class ZhihuAnswerItem(scrapy.Item):
     question_id = scrapy.Field()
     author_id = scrapy.Field()
     content = scrapy.Field()
-    parise_num = scrapy.Field()
+    praise_num = scrapy.Field()
     comments_num = scrapy.Field()
     create_time = scrapy.Field()
     update_time = scrapy.Field()
-    updated_time = scrapy.Field()
+    crawl_time = scrapy.Field()
+    def get_insert_sql(self):
+        insert_sql = """
+        insert into zhihu_answer(zhihu_id, url, question_id, author_id, content, praise_num, comments_num, create_time, update_time, crawl_time)
+        values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        """
+
+        create_time = datetime.datetime.fromtimestamp(self['create_time']).strftime(SQL_DATETIME_FORMAT)
+        update_time = datetime.datetime.fromtimestamp(self['update_time']).strftime(SQL_DATETIME_FORMAT)
+        params = (
+            self["zhihu_id"], self["url"], self["question_id"],
+            self["author_id"], self["content"], self["praise_num"],
+            self["comments_num"], create_time, update_time,
+            self['crawl_time'].strftime(SQL_DATE_FORMAT)
+        )
+
+        return insert_sql, params
+
+class ZhipinItemLoader(ItemLoader):
+    default_output_processor = TakeFirst()
+
+class ZhipinItem(scrapy.Item):
+    title = scrapy.Field()
+    url = scrapy.Field()
+    url_object_id = scrapy.Field()
+    salary = scrapy.Field()
+    job_city = scrapy.Field()
+    work_years = scrapy.Field()
+    degree_need = scrapy.Field()
+    publish_time = scrapy.Field()
+    tags = scrapy.Field()
+    job_sec = scrapy.Field()  # 职位描述
+    job_location =scrapy.Field()
+
+    company_url = scrapy.Field()
+    company_name = scrapy.Field()
+    crawl_time = scrapy.Field()
+    crawl_upate_time = scrapy.Field()
+
