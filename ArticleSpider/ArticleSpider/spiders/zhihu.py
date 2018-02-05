@@ -120,8 +120,8 @@ class ZhihuSpider(scrapy.Spider):
         post_url = 'https://www.zhihu.com/login/phone_num'
         post_data = {
             "_xsrf": xsrf,
-            "phone_num": '15501967360',
-            "password": 'a2577811',
+            "phone_num": '*********',
+            "password": '**********',
             # "captcha_type": 'cn',
             "captcha": response.meta['captcha']
         }
