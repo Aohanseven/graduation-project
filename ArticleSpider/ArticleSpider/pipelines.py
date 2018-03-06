@@ -8,10 +8,14 @@ import codecs
 import json
 import pymysql
 import pymysql.cursors
+import pymongo
 
+from scrapy.conf import settings
 from scrapy.pipelines.images import ImagesPipeline
 from scrapy.exporters import JsonItemExporter
 from twisted.enterprise import adbapi
+from .items import ZhipinItem
+from scrapy import log
 
 class ArticlespiderPipeline(object):
     def process_item(self, item, spider):
@@ -89,6 +93,17 @@ class MysqlTwistedPipeline(object):
 #     def process_item(self, item, spider):
 #         self.exporter.export_item(item)
 #         return item
+class MongoDBPipleline(object):
+    def __init__(self):
+        self.client = pymongo.MongoClient(host=settings["MONGODB_HOST"],port=settings["MONGODB_PORT"])
+        self.db = self.client[settings["MONGODB_DBNAME"]]
+        self.coll = self.db[settings['MONGODB_COLL']]
+
+    def process_item(self, item, spider):
+        postItem = dict(item)
+        self.coll.insert(postItem)
+        return item
+
 
 class ArticleImagePipeline(ImagesPipeline):
     def item_completed(self, results, item, info):

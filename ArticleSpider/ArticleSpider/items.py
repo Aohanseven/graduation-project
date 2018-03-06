@@ -9,7 +9,7 @@ import re
 import scrapy
 
 from scrapy.loader import ItemLoader
-from scrapy.loader.processors import MapCompose, TakeFirst, Join
+from scrapy.loader.processors import MapCompose, TakeFirst, Join,Identity
 from .utils.common import extract_nums
 from .settings import SQL_DATETIME_FORMAT, SQL_DATE_FORMAT
 
@@ -40,11 +40,13 @@ def return_value(value):
     return  value
 
 
+
 def remove_comment_tages(value):
     if "评论" in value:
         return ""
     else:
         return value
+
 
 
 class ArticleItemLoader(ItemLoader):
@@ -153,8 +155,7 @@ class ZhihuAnswerItem(scrapy.Item):
         return insert_sql, params
 
 class ZhipinItemLoader(ItemLoader):
-    default_output_processor = TakeFirst()
-
+        pass
 class ZhipinItem(scrapy.Item):
     title = scrapy.Field()
     url = scrapy.Field()
@@ -167,7 +168,6 @@ class ZhipinItem(scrapy.Item):
     tags = scrapy.Field()
     job_sec = scrapy.Field()  # 职位描述
     job_location =scrapy.Field()
-
     company_url = scrapy.Field()
     company_name = scrapy.Field()
     crawl_time = scrapy.Field()

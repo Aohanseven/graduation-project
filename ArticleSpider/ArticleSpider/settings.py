@@ -30,7 +30,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 5
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -51,7 +51,11 @@ DEFAULT_REQUEST_HEADERS = {
 #SPIDER_MIDDLEWARES = {
 #    'ArticleSpider.middlewares.ArticlespiderSpiderMiddleware': 543,
 #}
-
+SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+ITEM_PIPELINES = {
+    'scrapy_redis.pipelines.RedisPipeline': 300
+}
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 # DOWNLOADER_MIDDLEWARES = {
@@ -66,13 +70,13 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
+#ITEM_PIPELINES = {
 #    'ArticleSpider.pipelines.JsonExporterPipeline': 2,
 #    # 'scrapy.pipelines.images.ImagesPipeline': 1,
 #    'ArticleSpider.pipelines.ArticleImagePipeline':1,
-   'ArticleSpider.pipelines.MysqlTwistedPipeline': 1
-
-}
+  # 'ArticleSpider.pipelines.MysqlTwistedPipeline': 1.
+   #'ArticleSpider.pipelines.MongoDBPipleline':1
+#}
 
 IMAGES_URLS_FIELD = "front_image_url"
 project_dir = os.path.abspath(os.path.dirname(__file__))
@@ -105,5 +109,12 @@ MYSQL_PASSWORD = '2577811'
 MYSQL_PORT = 3306
 
 
-SQL_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+SQL_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 SQL_DATE_FORMAT = "%Y-%m-%d"
+
+
+MONGODB_HOST = '127.0.0.1'
+MONGODB_DBNAME = 'zhipin'
+MONGODB_COLL = 'zhipindata'
+MONGODB_PORT = 27017
+
